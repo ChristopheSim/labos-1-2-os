@@ -14,10 +14,12 @@ void* doSomeThing(void *arg)
     if(pthread_equal(id,tid[0]))
     {
         printf("\n First thread processing\n");
+        printf("\n %d \n", getpid());
     }
     else
     {
         printf("\n Second thread processing\n");
+        printf("\n %d \n", getpid());
     }
 
     for(i=0; i<(0xFFFFFFFF);i++);
