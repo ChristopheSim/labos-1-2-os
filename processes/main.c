@@ -1,31 +1,32 @@
 #include <stdio.h>
-#include <unistd.h> 
+#include <stdlib.h>
 
 #define BUFFER_SIZE 50
 
-/* void forkexample() 
-{ 
-    // child process because return value zero 
-    if (fork() == 0) 
-        printf("Hello from Child!\n"); 
-  
-    // parent process because return value non-zero. 
-    else
-        printf("Hello from Parent!\n"); 
-}  */
-
-int main(int argc, char *argv[]) 
-{ 
+int main() {
     char string[BUFFER_SIZE];
+    char path[30];
 
-    if(fork())
-        sample = string;
-    else if(fork())
-        sample = string;
-    else
-        myvar = 3;
+    FILE *source_file;
+    FILE *destination_file;
 
-    printf("I'm %d: myvar is %d\n", getpid(), myvar);
+    source_file = fopen("../lorem_ipsum.txt", "r");
+    if (source_file == NULL) {
+        printf("Error read file");
+        return -1;
+    }
+    
+    int i = 0;
+    while (fgets(string, BUFFER_SIZE, source_file) != NULL) {
+        sprintf(path, "./calc/fork%d.txt", i);
+        destination_file = fopen(path, "a");
 
-    return 0; 
-} 
+
+        fclose(destination_file);
+        i += 1;
+    }
+
+    fclose(source_file);
+    return 0;
+}
+
