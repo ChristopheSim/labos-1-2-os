@@ -35,7 +35,6 @@ int main() {
     char string[BUFFER_SIZE];
     char path[30];
     char name_file[30];
-    char paths[NUMBER_OF_FORK][20];
 
     source_file = fopen("../lorem_ipsum.txt", "r");
     if (source_file == NULL) {
@@ -55,7 +54,6 @@ int main() {
 
         // Formating to create the path file and save the name file created
         sprintf(name_file, "fork%d", i);
-        sprintf(paths[i], "fork%d", i);
         sprintf(path, "./calc/%s.txt", name_file);
 
         destination_file = fopen(path, "a");
