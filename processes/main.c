@@ -1,18 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define NUMBER_OF_FORK 10
 #define MIN_CARA 200
 
-void sort_frequencies(char *paths);
+void sort_frequencies();
 
 int main() {
-    int FILE_SIZE = 0; //size of the source file
-    int BUFFER_SIZE = 0; //number of cara at take
+    int FILE_SIZE = 0; // Size of the source file
+    int BUFFER_SIZE = 0; // Number of cara at take
     FILE *source_file;
     FILE *destination_file;
 
-    //Calcul of the file's size
+    // Calcul of the file's size
     source_file = fopen("../lorem_ipsum.txt", "r");
     if (source_file == NULL) {
         printf("Error read file");
@@ -25,6 +26,7 @@ int main() {
         fclose(source_file);
     }
 
+    // Decision of the buffer size
     if (FILE_SIZE <= MIN_CARA) {
         BUFFER_SIZE = FILE_SIZE;
     }
@@ -52,26 +54,69 @@ int main() {
             cara ++;
         }
 
-        // Formating to create the path file and save the name file created
+        // Formating to create the path file
         sprintf(name_file, "fork%d", i);
         sprintf(path, "./calc/%s.txt", name_file);
 
         destination_file = fopen(path, "a");
 
-        //Code Juju
-
-        //Just for testing// fputs(string, destination_file);
+        // Code Juju
 
         fclose(destination_file);
         i += 1;                
     }
 
     fclose(source_file);
+    sort_frequencies();
+
     return 0;
 }
 
-void sort_frequencies(char *paths) {
-    
+void sort_frequencies() {
+    FILE *frequencies_table;
+    FILE *fork_file;
+    char path_fork_file[30];
+    char name_fork_file[15];
+    char string[10];
+    int frequencies[26] = { 0 };
+
+    frequencies_table = fopen("./frequenciesTable.txt", "w");
+
+    int fork = 0;
+    while (fork < NUMBER_OF_FORK) {
+        sprintf(name_fork_file, "fork%d", fork);
+        sprintf(path_fork_file, "./calc/%s.txt", name_fork_file);
+
+        fork_file = fopen(path_fork_file, "r");
+        
+        while (fgets(string, 10, fork_file) != NULL) {
+            char frequency[strlen(string) - 1];
+            // Remove carriage return
+            if (string[strlen(string) - 1] == '\n') {
+                string[strlen(string) - 1] = '\0';
+            }
+            
+            frequency[strlen(frequency) - 1] = '\0';
+
+            // Recover the frequency
+            for (int i = 0; i < strlen(string) - 2; i++) {
+                frequency[i] = string[2+i];
+            }
+
+            frequencies[string[0] - 97] += atoi(frequency);
+        }
+
+        fclose(fork_file);
+        fork ++;
+    }
+
+    // Print the frequencies in the file
+    char str[15];
+    for (int i = 0; i < 26; i++) {
+        sprintf(str, "%c:%d\n", i+97, frequencies[i]);
+        fputs(str, frequencies_table);
+    }
+
+    fclose(frequencies_table);
+
 }
-
-
