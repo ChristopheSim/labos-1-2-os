@@ -1,17 +1,13 @@
+#include "config.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define NUMBER_OF_FORK 10
-#define MIN_CARA 200
-
 void sort_frequencies();
 
 int main() {
-    int FILE_SIZE = 0; // Size of the source file
-    int BUFFER_SIZE = 0; // Number of cara at take
-    FILE *source_file;
-    FILE *destination_file;
+     // Number of cara at take
+    FILE *source_file, *destination_file;
 
     // Calcul of the file's size
     source_file = fopen("../lorem_ipsum.txt", "r");
@@ -29,14 +25,15 @@ int main() {
     // Decision of the buffer size
     if (FILE_SIZE <= MIN_CARA) {
         BUFFER_SIZE = FILE_SIZE;
+        NUMBER_OF_FORK = 1;
     }
     else if (FILE_SIZE > MIN_CARA) {
         BUFFER_SIZE = FILE_SIZE/NUMBER_OF_FORK;
     }
 
-    char string[BUFFER_SIZE];
-    char path[30];
-    char name_file[30];
+
+    // Calcul of the frequencies table
+    char string[BUFFER_SIZE], path[30], name_file[30];
 
     source_file = fopen("../lorem_ipsum.txt", "r");
     if (source_file == NULL) {
@@ -44,7 +41,6 @@ int main() {
         exit(-1);
     }
 
-    // Calcul of the frequencies table
     int i = 0;
     while (i < NUMBER_OF_FORK) {
         // Take the n*BUFFER_SIZE cara for computing
@@ -73,11 +69,8 @@ int main() {
 }
 
 void sort_frequencies() {
-    FILE *frequencies_table;
-    FILE *fork_file;
-    char path_fork_file[30];
-    char name_fork_file[15];
-    char string[10];
+    FILE *frequencies_table, *fork_file;
+    char path_fork_file[30], name_fork_file[15], string[10];
     int frequencies[26] = { 0 };
 
     frequencies_table = fopen("./frequenciesTable.txt", "w");
