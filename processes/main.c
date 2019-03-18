@@ -8,17 +8,7 @@ int main() {
     FILE *source_file, *destination_file;
 
     // Calcul of the file's size
-    source_file = fopen("../lorem_ipsum.txt", "r");
-    if (source_file == NULL) {
-        printf("Error read file");
-        exit(-1);
-    }
-    else {
-        while (fgetc(source_file) != EOF) {
-            FILE_SIZE++;
-        }
-        fclose(source_file);
-    }
+    FILE_SIZE = size_file("../lorem_ipsum.txt");    
 
     // Decision of the buffer size
     if (FILE_SIZE <= MIN_CARA) {

@@ -7,5 +7,6 @@
 #include <string.h>
 
 void sort_frequencies();
+int size_file();
 
 #endif /* functions */
