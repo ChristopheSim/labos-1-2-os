@@ -1,5 +1,0 @@
-#define MIN_CARA 200
-
-int FILE_SIZE = 0; 
-int BUFFER_SIZE = 0;
-int NUMBER_OF_FORK = 10;
