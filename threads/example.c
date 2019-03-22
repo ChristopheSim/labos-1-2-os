@@ -5,10 +5,10 @@
 #include<unistd.h>
 #include<sys/sysinfo.h> //look nbr of threads
 
-long size(char *addr)
+long int size(char *addr)
 {
 	FILE *fichier;
-	long sfile;
+	long int sfile;
 
 	fichier=fopen (addr,"rb");
 
@@ -34,6 +34,12 @@ void* doSomeThing(void *arg)
     return NULL;
 }
 
+int computesizethread(long int sfile, int nthread)
+{
+	long int ratio = sfile / (long int)nthread;
+	return (int)ratio;
+}
+
 int main(void)
 {
     int i = 0;
@@ -44,9 +50,12 @@ int main(void)
     int nthread = get_nprocs(); 
     printf("\nnbr thread : [%d]", nthread);
     
-    long sfile = size("../lorem_ipsum.txt");
-    printf("\nsize file : [%d]\n", sfile);
+    long int sfile = size("../lorem_ipsum.txt");
+    printf("\nsize file : [%li]", sfile);
 
+    int sthread = computesizethread(sfile, nthread);
+    printf("\nsize thread : [%d]\n", sthread);
+    
     pthread_t tid[nthread];
 
     while(i < nthread)
