@@ -38,13 +38,13 @@ int main() {
         sprintf(path, "./calc/%s.txt", name_file);
 
         destination_file = fopen(path, "a");
-
-        // Code Juju
-
+    }
+    else {
+        wait(NULL);
+    }
         fclose(destination_file);
         i += 1;                
     }
-
     fclose(source_file);
     sort_frequencies();
 
