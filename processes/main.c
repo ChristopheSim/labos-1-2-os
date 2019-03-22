@@ -1,33 +1,57 @@
+#include "./src/config.h"
+#include "./src/functions.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-#define BUFFER_SIZE 50
+int main() {    
+     // Number of cara at take
+    FILE *source_file, *destination_file;
 
-int main() {
-    char string[BUFFER_SIZE];
-    char path[30];
+    // Calcul of the file's size
+    FILE_SIZE = size_file("../lorem_ipsum.txt");    
 
-    FILE *source_file;
-    FILE *destination_file;
+    // Decision of the buffer size
+    if (FILE_SIZE <= MIN_CARA) {
+        BUFFER_SIZE = FILE_SIZE;
+        NUMBER_OF_FORK = 1;
+    }
+    else if (FILE_SIZE > MIN_CARA) {
+        BUFFER_SIZE = FILE_SIZE/NUMBER_OF_FORK;
+    }
+
+
+    // Calcul of the frequencies table
+    char string[BUFFER_SIZE], path[30], name_file[30];
 
     source_file = fopen("../lorem_ipsum.txt", "r");
     if (source_file == NULL) {
         printf("Error read file");
-        return -1;
+        exit(-1);
     }
-    
+
     int i = 0;
-    while (fgets(string, BUFFER_SIZE, source_file) != NULL) {
-        sprintf(path, "./calc/fork%d.txt", i);
+    while (i < NUMBER_OF_FORK) {
+        // Take the n*BUFFER_SIZE cara for computing
+        int cara = 0;
+        while (cara < BUFFER_SIZE) {
+            string[cara] = fgetc(source_file);
+            cara ++;
+        }
+
+        // Formating to create the path file
+        sprintf(name_file, "fork%d", i);
+        sprintf(path, "./calc/%s.txt", name_file);
+
         destination_file = fopen(path, "a");
     }
     else {
         wait(NULL);
     }
         fclose(destination_file);
-        i += 1;
+        i += 1;                
     }
     fclose(source_file);
+    sort_frequencies();
+
     return 0;
 }
-
