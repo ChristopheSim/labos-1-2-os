@@ -5,6 +5,12 @@
 #include<unistd.h>
 #include<sys/sysinfo.h> //look nbr of threads
 
+struct thread_param {
+	FILE *fichier;
+	int startchar;
+	int nchar;
+};
+
 long int size(char *addr)
 {
 	FILE *fichier;
@@ -21,13 +27,16 @@ long int size(char *addr)
 	return sfile;
 }
 
-void* doSomeThing(void *arg)
+void* doSomeThing(void* arg)
 {
+    struct thread_param* tp = (struct thread_param*) arg;
+
     unsigned long i = 0;
     pthread_t id = pthread_self();
 
     printf("\nN° process : [%d]",getpid());
-    printf("\nID thread : [%d]\n",id);
+    printf("\nID thread : [%d]",id);
+    printf("\nstartchar : [%d]\n", tp->startchar);
 
     for(i=0; i<(0xFFFFFFFF);i++);
 
@@ -58,15 +67,34 @@ int main(void)
     
     pthread_t tid[nthread];
 
+    struct thread_param thread_args[nthread];
+	
+    FILE *fichier;
+    fichier = fopen ("../lorem_ipsum.txt","rb");
+
     while(i < nthread)
     {
-        err = pthread_create(&(tid[i]), NULL, &doSomeThing, NULL);
+	// set arguments for the threads
+	thread_args[i].fichier = fichier; //set fichier
+	thread_args[i].startchar = i*sthread;
+	thread_args[i].nchar = sthread;
+	
+	// create the threads with the arguments
+        err = pthread_create(&(tid[i]), NULL, &doSomeThing, &(thread_args[i]));
         if (err != 0)
             printf("\nerror creating thread : %s", strerror(err));
         else
             printf("\nThread created successfully");
 	printf("\nID thread : [%d]", tid[i]);
 	printf("\nN° threads : [%d]", ++i);
+    }
+
+    i = 0;
+    while(i < nthread)
+    {
+	// wait to kill all the threads
+	pthread_join(tid[i++], NULL);
+	printf("\nKill thread : [%d]", i);
     }
 
     sleep(5);
