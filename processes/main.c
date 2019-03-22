@@ -2,10 +2,12 @@
 #include "./src/functions.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
 int main() {    
      // Number of cara at take
-    FILE *source_file, *destination_file;
+    FILE *source_file;
 
     // Calcul of the file's size
     FILE_SIZE = size_file("../lorem_ipsum.txt");    
@@ -32,26 +34,29 @@ int main() {
     int i = 0;
     while (i < NUMBER_OF_FORK) {
         // Take the n*BUFFER_SIZE cara for computing
-        int cara = 0;
-        while (cara < BUFFER_SIZE) {
-            string[cara] = fgetc(source_file);
-            cara ++;
-        }
+        fread(string, sizeof(char), BUFFER_SIZE, source_file);
 
         // Formating to create the path file
         sprintf(name_file, "fork%d", i);
         sprintf(path, "./calc/%s.txt", name_file);
 
-        destination_file = fopen(path, "a");
+        if (fork() == 0) {
+            count_letters(path, string);
+            return 0;
+        }
+        i ++;                
     }
-    else {
-        wait(NULL);
+
+    for(int i=0; i < NUMBER_OF_FORK; i++) {
+        /* printf("%d\n", getpid()); */
+        pid_t cpid = wait(NULL);
+        /* printf("%d\n", cpid); */
     }
-        fclose(destination_file);
-        i += 1;                
-    }
+
     fclose(source_file);
     sort_frequencies();
+
+    printf("C'est fini !!");
 
     return 0;
 }
