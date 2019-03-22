@@ -32,6 +32,7 @@ int main() {
     }
 
     int i = 0;
+    size_t ok_read = 0;
     while (i < NUMBER_OF_FORK) {
         // Take the n*BUFFER_SIZE cara for computing
         fread(string, sizeof(char), BUFFER_SIZE, source_file);
