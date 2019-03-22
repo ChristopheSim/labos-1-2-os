@@ -20,12 +20,13 @@ int main() {
     while (fgets(string, BUFFER_SIZE, source_file) != NULL) {
         sprintf(path, "./calc/fork%d.txt", i);
         destination_file = fopen(path, "a");
-
-
+    }
+    else {
+        wait(NULL);
+    }
         fclose(destination_file);
         i += 1;
     }
-
     fclose(source_file);
     return 0;
 }
