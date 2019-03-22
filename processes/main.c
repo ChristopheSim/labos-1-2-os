@@ -4,7 +4,6 @@
 #include <stdlib.h>
 
 int main() {    
-     // Number of cara at take
     FILE *source_file, *destination_file;
 
     // Calcul of the file's size
@@ -30,14 +29,10 @@ int main() {
     }
 
     int i = 0;
+    size_t ok_read = 0;
     while (i < NUMBER_OF_FORK) {
-        // Take the n*BUFFER_SIZE cara for computing
-        int cara = 0;
-        while (cara < BUFFER_SIZE) {
-            string[cara] = fgetc(source_file);
-            cara ++;
-        }
-
+        ok_read = fread(string, sizeof(char), BUFFER_SIZE, source_file);
+        
         // Formating to create the path file
         sprintf(name_file, "fork%d", i);
         sprintf(path, "./calc/%s.txt", name_file);

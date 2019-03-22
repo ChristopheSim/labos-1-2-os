@@ -10,9 +10,8 @@ int size_file(char path[]) {
             exit(-1);
         }
         else {
-            while (fgetc(file) != EOF) {
-                size++;
-            }
+            fseek(file, 0, SEEK_END);
+            size = ftell(file);
             fclose(file);
         }
     
