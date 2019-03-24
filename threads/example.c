@@ -9,7 +9,7 @@ struct thread_param {
 	FILE *fichier;
 	int startchar;
 	int nchar;
-	int result[46];
+	int result[26];
 };
 
 long int size(char *addr)
@@ -54,7 +54,7 @@ void* count_letters(void* arg)
 
     for (int i=0; i<26; i++)
     {
-	    printf("[%d] : %d",i,tp->result[i]);
+	    //printf("[%d] : %d",i,tp->result[i]);
     }
     //return NULL;
     //return (void*) freq;
@@ -68,22 +68,6 @@ void* count_letters(void* arg)
 
     printf("%s\n", buffer);
     */
-}
-
-void* doSomeThing(void* arg)
-{
-    struct thread_param* tp = (struct thread_param*) arg;
-
-    unsigned long i = 0;
-    pthread_t id = pthread_self();
-
-    printf("\nN° process : [%d]",getpid());
-    printf("\nID thread : [%d]",id);
-    printf("\nstartchar : [%d]\n", tp->startchar);
-
-    for(i=0; i<(0xFFFFFFFF);i++);
-
-    return NULL;
 }
 
 int computesizethread(long int sfile, int nthread)
@@ -100,13 +84,13 @@ int main(void)
     // use import <sys/sysinfo.h>
     // it return the number of cores available
     int nthread = get_nprocs(); 
-    printf("\nnbr thread : [%d]", nthread);
+    //printf("\nnbr thread : [%d]", nthread);
     
     long int sfile = size("../lorem_ipsum.txt");
-    printf("\nsize file : [%li]", sfile);
+    //printf("\nsize file : [%li]", sfile);
 
     int sthread = computesizethread(sfile, nthread);
-    printf("\nsize thread : [%d]\n", sthread);
+    //printf("\nsize thread : [%d]\n", sthread);
     
     pthread_t tid[nthread];
 
@@ -115,7 +99,7 @@ int main(void)
     FILE *fichier;
     fichier = fopen ("../lorem_ipsum.txt","rb");
 
-    while(i < nthread)
+    for(int i=0; i<nthread; i++)
     {
 	// set arguments for the threads
 	thread_args[i].fichier = fichier; //set fichier
@@ -127,24 +111,20 @@ int main(void)
         if (err != 0)
             printf("\nerror creating thread : %s", strerror(err));
         else
-            printf("\nThread created successfully");
-	printf("\nID thread : [%d]", tid[i]);
-	printf("\nN° threads : [%d]", ++i);
+            printf("Thread created successfully\n");
+	// information about the thread
+	//printf("\nID thread : [%d]", tid[i]);
+	//printf("\nN° threads : [%d]", ++i);
     }
-
-    i = 0;
-    while(i < nthread)
+	
+    // wait to kill all the threads
+    for(int i=0; i<nthread; i++)
     {
-	// wait to kill all the threads
 	pthread_join(tid[i], NULL);
-	//pthread_join(tid[i++], NULL);
-	for( int j=0; j<26; j++)
-		{
-			//printf("\n\nresult [%d] : %d\n\n",j , thread_args[i].result[j]);
-		}
-	printf("\nKill thread : [%d]", i++);
+	printf("Kill thread : [%d]\n", i);
     }
 
+    // manipulate received value from threads
     int result[26] = {0};
     for(int i=0; i<26; i++)
     {
@@ -154,8 +134,6 @@ int main(void)
 	    }
     	    printf("Result [%d] : %d\n", i, result[i]);
     }
-
-
 
     fclose(fichier);
 
