@@ -57,6 +57,13 @@ int main() {
     fclose(source_file);
     sort_frequencies();
 
+    // Delete files
+    for (int j = 0; j < NUMBER_OF_FORK; j++) {
+        sprintf(name_file, "fork%d", j);
+        sprintf(path, "./calc/%s.txt", name_file);
+        remove(path);
+    }
+
     printf("C'est fini !!");
 
     return 0;
