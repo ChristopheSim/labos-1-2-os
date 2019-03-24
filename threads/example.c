@@ -27,6 +27,28 @@ long int size(char *addr)
 	return sfile;
 }
 
+void* count_letters(void* arg)
+{	
+    // TO DO
+    struct thread_param* tp = (struct thread_param*) arg;
+    /*
+    int freq[26] = { 0 };
+
+    // read part of the file
+    for (int i=0; i < tp->nchar; i++)
+    {
+	    // read char startchar+i
+    }
+    */
+
+    char *buffer = malloc(tp->nchar + 1);
+    fseek(tp->fichier, tp->startchar, SEEK_SET);
+    int len = fread(buffer, 1, tp->nchar, tp->fichier);
+    *(buffer+len) = '\0';
+
+    printf("%s\n", buffer);
+}
+
 void* doSomeThing(void* arg)
 {
     struct thread_param* tp = (struct thread_param*) arg;
@@ -80,7 +102,7 @@ int main(void)
 	thread_args[i].nchar = sthread;
 	
 	// create the threads with the arguments
-        err = pthread_create(&(tid[i]), NULL, &doSomeThing, &(thread_args[i]));
+        err = pthread_create(&(tid[i]), NULL, &count_letters, &(thread_args[i]));
         if (err != 0)
             printf("\nerror creating thread : %s", strerror(err));
         else
@@ -96,6 +118,8 @@ int main(void)
 	pthread_join(tid[i++], NULL);
 	printf("\nKill thread : [%d]", i);
     }
+
+    fclose(fichier);
 
     sleep(5);
     return 0;
