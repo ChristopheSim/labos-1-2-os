@@ -31,22 +31,38 @@ void* count_letters(void* arg)
 {	
     // TO DO
     struct thread_param* tp = (struct thread_param*) arg;
-    /*
+   
     int freq[26] = { 0 };
 
+    fseek(tp->fichier, tp->startchar, SEEK_SET);
     // read part of the file
+    // https:://rosettacode.org/wiki/Letter_frequency#C
     for (int i=0; i < tp->nchar; i++)
     {
-	    // read char startchar+i
-    }
-    */
+	    char ch = fgetc(tp->fichier);
+	    if (ch == EOF) break;
 
+	    if ('a' <= ch && ch <= 'z')
+		    freq[ch-'a']++;
+	    else if ('A' <= ch && ch <= 'Z')
+		    freq[ch-'A']++;
+    }
+
+    for (int i=0; i<26; i++)
+    {
+	    printf("[%d] : %d",i,freq[i]);
+    }
+    return NULL;
+    //return (void*) freq;
+    	
+    /* to read a part of the file
     char *buffer = malloc(tp->nchar + 1);
     fseek(tp->fichier, tp->startchar, SEEK_SET);
     int len = fread(buffer, 1, tp->nchar, tp->fichier);
     *(buffer+len) = '\0';
 
     printf("%s\n", buffer);
+    */
 }
 
 void* doSomeThing(void* arg)
@@ -94,6 +110,8 @@ int main(void)
     FILE *fichier;
     fichier = fopen ("../lorem_ipsum.txt","rb");
 
+    int result[nthread];
+
     while(i < nthread)
     {
 	// set arguments for the threads
@@ -115,6 +133,7 @@ int main(void)
     while(i < nthread)
     {
 	// wait to kill all the threads
+	//pthread_join(tid[i++], (void*) &result[i]);
 	pthread_join(tid[i++], NULL);
 	printf("\nKill thread : [%d]", i);
     }
