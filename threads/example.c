@@ -9,6 +9,7 @@ struct thread_param {
 	FILE *fichier;
 	int startchar;
 	int nchar;
+	int result[46];
 };
 
 long int size(char *addr)
@@ -32,7 +33,10 @@ void* count_letters(void* arg)
     // TO DO
     struct thread_param* tp = (struct thread_param*) arg;
    
-    int freq[26] = { 0 };
+    //int freq[26] = { 0 };
+
+    // inialise result array
+    memset(tp->result, 0, sizeof(tp->result));
 
     fseek(tp->fichier, tp->startchar, SEEK_SET);
     // read part of the file
@@ -43,18 +47,19 @@ void* count_letters(void* arg)
 	    if (ch == EOF) break;
 
 	    if ('a' <= ch && ch <= 'z')
-		    freq[ch-'a']++;
+		    tp->result[ch-'a']++;
 	    else if ('A' <= ch && ch <= 'Z')
-		    freq[ch-'A']++;
+		    tp->result[ch-'A']++;
     }
 
     for (int i=0; i<26; i++)
     {
-	    printf("[%d] : %d",i,freq[i]);
+	    printf("[%d] : %d",i,tp->result[i]);
     }
-    return NULL;
+    //return NULL;
     //return (void*) freq;
-    	
+    pthread_exit(NULL);
+
     /* to read a part of the file
     char *buffer = malloc(tp->nchar + 1);
     fseek(tp->fichier, tp->startchar, SEEK_SET);
@@ -110,8 +115,6 @@ int main(void)
     FILE *fichier;
     fichier = fopen ("../lorem_ipsum.txt","rb");
 
-    int result[nthread];
-
     while(i < nthread)
     {
 	// set arguments for the threads
@@ -133,10 +136,26 @@ int main(void)
     while(i < nthread)
     {
 	// wait to kill all the threads
-	//pthread_join(tid[i++], (void*) &result[i]);
-	pthread_join(tid[i++], NULL);
-	printf("\nKill thread : [%d]", i);
+	pthread_join(tid[i], NULL);
+	//pthread_join(tid[i++], NULL);
+	for( int j=0; j<26; j++)
+		{
+			//printf("\n\nresult [%d] : %d\n\n",j , thread_args[i].result[j]);
+		}
+	printf("\nKill thread : [%d]", i++);
     }
+
+    int result[26] = {0};
+    for(int i=0; i<26; i++)
+    {
+	    for(int j=0; j<nthread; j++)
+	    {
+		    result[i] += thread_args[j].result[i];
+	    }
+    	    printf("Result [%d] : %d\n", i, result[i]);
+    }
+
+
 
     fclose(fichier);
 
