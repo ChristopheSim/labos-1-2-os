@@ -6,7 +6,6 @@
 #include <sys/wait.h>
 
 int main() {    
-     // Number of cara at take
     FILE *source_file;
 
     // Calcul of the file's size
@@ -32,7 +31,6 @@ int main() {
     }
 
     int i = 0;
-    size_t ok_read = 0;
     while (i < NUMBER_OF_FORK) {
         // Take the n*BUFFER_SIZE cara for computing
         fread(string, sizeof(char), BUFFER_SIZE, source_file);
@@ -64,7 +62,7 @@ int main() {
         remove(path);
     }
 
-    printf("C'est fini !!");
+    printf("C'est fini !!\n");
 
     return 0;
 }
