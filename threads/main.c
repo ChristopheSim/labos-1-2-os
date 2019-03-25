@@ -5,6 +5,7 @@
 #include<sys/sysinfo.h> //look nbr of threads
 #include<stdlib.h>
 #include<unistd.h>
+#include<string.h>
 
 struct thread_param {
 	FILE *fichier;
@@ -33,6 +34,10 @@ int main(void)
     // use import <sys/sysinfo.h>
     // it return the number of cores available
     int nthread = get_nprocs();
+	if ( nthread < 0 )
+	{
+		nthread = 1;
+	}
 
     long int sfile = size(fichier);
     //printf("\nsize file : [%li]", sfile);
@@ -78,6 +83,5 @@ int main(void)
 
     fclose(fichier);
 
-    sleep(5);
     return 0;
 }

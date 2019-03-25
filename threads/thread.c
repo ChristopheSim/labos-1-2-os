@@ -1,3 +1,12 @@
+#include "./thread.h"
+
+struct thread_param {
+	FILE *fichier;
+	int startchar;
+	int nchar;
+	int result[26];
+};
+
 void* count_letters(void* arg)
 {
     // take arguments
@@ -8,7 +17,7 @@ void* count_letters(void* arg)
     fseek(tp->fichier, tp->startchar, SEEK_SET);
 
     // read part of the file
-    // https:://rosettacode.org/wiki/Letter_frequency#C
+    // https://rosettacode.org/wiki/Letter_frequency#C
     for (int i=0; i < tp->nchar; i++)
     {
 	    char ch = fgetc(tp->fichier);
