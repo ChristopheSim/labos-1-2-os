@@ -8,7 +8,6 @@
 int main() {    
     FILE *source_file;
 
-    // Calcul of the file's size
     FILE_SIZE = size_file("../lorem_ipsum.txt");    
 
     // Decision of the buffer size
@@ -19,8 +18,7 @@ int main() {
     else if (FILE_SIZE > MIN_CARA) {
         BUFFER_SIZE = FILE_SIZE/NUMBER_OF_FORK;
     }
-
-
+ 
     // Calcul of the frequencies table
     char string[BUFFER_SIZE], path[30], name_file[30];
 
@@ -32,7 +30,7 @@ int main() {
 
     int i = 0;
     while (i < NUMBER_OF_FORK) {
-        // Take the n*BUFFER_SIZE cara for computing
+        // Take the BUFFER_SIZE cara for computing
         fread(string, sizeof(char), BUFFER_SIZE, source_file);
 
         // Formating to create the path file
@@ -43,16 +41,17 @@ int main() {
             count_letters(path, string);
             return 0;
         }
+
         i ++;                
     }
 
+    fclose(source_file);
+    
+    // Wait that all forks finished
     for(int i=0; i < NUMBER_OF_FORK; i++) {
-        /* printf("%d\n", getpid()); */
         pid_t cpid = wait(NULL);
-        /* printf("%d\n", cpid); */
     }
 
-    fclose(source_file);
     sort_frequencies();
 
     // Delete files
