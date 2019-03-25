@@ -5,7 +5,9 @@ void count_letters(char path[], char string[]) {
     int frequencies[26] = { 0 };
 
     for(int i = 0; i < strlen(string); i++) {
-        frequencies[string[i] - 'a'] += 1;
+        if (string[i] >= 'a' && string[i] <= 'z') {
+            frequencies[string[i] - 'a'] += 1;
+        }
     }
 
     file_frequency = fopen(path, "w");
@@ -16,6 +18,6 @@ void count_letters(char path[], char string[]) {
         sprintf(str, "%c:%d\n", i + 'a', frequencies[i]);
         fputs(str, file_frequency);
     }
-    
+
     fclose(file_frequency);
 }
