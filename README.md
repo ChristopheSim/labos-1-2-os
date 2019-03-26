@@ -11,11 +11,25 @@ The following commands are requested.
 1. To compile
 ```
 	gcc -pthread -o example.exe example.c
-
 ```
 
 1. To launch
 ```
 	./example.exe
+```
 
+## To compile the processes part
+With the *makefile* in the processes part, you can use the following command to compile the project:
+```
+	make
+```
+When you are run this command use :
+```
+	make clean
+```
+for cleaning the folder (remove the .o files).
+
+When you are run the commands, you can execute *processes.exe* with
+```
+	./processes.exe
 ```
