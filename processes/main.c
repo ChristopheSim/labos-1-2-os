@@ -19,7 +19,7 @@ int main() {
         BUFFER_SIZE = FILE_SIZE/NUMBER_OF_FORK;
     }
  
-    // Calcul of the frequencies table
+ 
     char string[BUFFER_SIZE], path[30], name_file[30];
 
     source_file = fopen("../lorem_ipsum.txt", "r");
@@ -30,10 +30,10 @@ int main() {
 
     int i = 0;
     while (i < NUMBER_OF_FORK) {
-        // Take the BUFFER_SIZE cara for computing
+        // Take the BUFFER_SIZE cara for the fork
         fread(string, sizeof(char), BUFFER_SIZE, source_file);
 
-        // Formating to create the path file
+        // Formating to create the fork path file
         sprintf(name_file, "fork%d", i);
         sprintf(path, "./calc/%s.txt", name_file);
 
@@ -49,12 +49,12 @@ int main() {
     
     // Wait that all forks finished
     for(int i=0; i < NUMBER_OF_FORK; i++) {
-        pid_t cpid = wait(NULL);
+        wait(NULL);
     }
 
     sort_frequencies();
 
-    // Delete files
+    // Delete fork files
     for (int j = 0; j < NUMBER_OF_FORK; j++) {
         sprintf(name_file, "fork%d", j);
         sprintf(path, "./calc/%s.txt", name_file);
