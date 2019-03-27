@@ -30,14 +30,18 @@ int main(void)
     int err;
     FILE *fichier;
     fichier = fopen ("../lorem_ipsum.txt","rb");
+    if (fichier)
+        printf("fichier exist");
+    else
+	return 1;
 
     // use import <sys/sysinfo.h>
     // it return the number of cores available
     int nthread = get_nprocs();
-	if ( nthread < 0 )
-	{
-		nthread = 1;
-	}
+    if ( nthread < 0 )
+    {
+	nthread = 1;
+    }
 
     long int sfile = size(fichier);
     //printf("\nsize file : [%li]", sfile);
@@ -57,7 +61,11 @@ int main(void)
 	thread_args[i].nchar = sthread;
 
 	// create the threads with the arguments
-    err = pthread_create(&(tid[i]), NULL, &count_letters, &(thread_args[i]));
+        err = pthread_create(&(tid[i]), NULL, &count_letters, &(thread_args[i]));
+	if (err != 0)
+	    return 1;
+	else
+	    printf("thread create successfully");
 	// informations about the thread
 	//printf("\nID thread : [%d]", tid[i]);
 	//printf("\nN° threads : [%d]", ++i);
@@ -66,7 +74,11 @@ int main(void)
     // wait to kill all the threads
     for(int i=0; i<nthread; i++)
     {
-	pthread_join(tid[i], NULL);
+	err = pthread_join(tid[i], NULL);
+	if (err != 0)
+	    return 1;
+	else
+	    printf("thread create successfully");
 	printf("Kill thread : [%d]\n", i);
     }
 
