@@ -10,6 +10,7 @@ int size_file(char path[]) {
             exit(-1);
         }
         else {
+            // Put the cursor at the end of the file and take this position
             fseek(file, 0, SEEK_END);
             size = ftell(file);
             fclose(file);
