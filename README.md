@@ -1,35 +1,28 @@
 # labos-1-2-os
-This project contains two ways to use parralel programming with a Linux operating systems:
-	- Processes
-	- Threads
+This repository contains two projects.
+This repository is a work about parallel programming with a Linux operating systems:
+- Processes
+- Threads
+
 ## The subject
 The aim of the project is to compute the number of letters in a text file and render a frequency table (with the occurency of each letter).
-That kind of algorithm can be used to compress the file with for example the Huffman coding.
 
-## To compile the threads part
-The following commands are requested.
-1. To compile
+## Compile the projects
+There is a *makefile* in each project.
+To compile each projects, you need to run `make` in each specific folder.
+
+## Clean the projects
+You must run `make clean` in each specific folder to clean the projects.
+
+## Run projects
+To run a project, you need to run the executable file from the specific folder.
+
+To execute test on the projects, you can use these two lines:
 ```
-	gcc -pthread -o example.exe example.c
+sudo time -v ./app.exe
+```
+```
+sudo perf stat -d ./app.exe
 ```
 
-1. To launch
-```
-	./example.exe
-```
-
-## To compile the processes part
-With the *makefile* in the processes part, you can use the following command to compile the project:
-```
-	make
-```
-When you are run this command use :
-```
-	make clean
-```
-for cleaning the folder (remove the .o files).
-
-When you are run the commands, you can execute *processes.exe* with
-```
-	./processes.exe
-```
+We also create a *bash file* `run.sh` in each folder who compile and run the project.
