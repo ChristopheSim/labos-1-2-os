@@ -26,3 +26,7 @@ sudo perf stat -d ./app.exe
 ```
 
 We also create a *bash file* `run.sh` in each folder who compile and run the project.
+To execute the *bash file* you need to make them executable with the command:
+```
+sudo chmod +x run.sh
+```
